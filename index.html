@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Character Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: rgba(0, 0, 0, 0.342);
+        }
+        
+        .container {
+            width: 400px;
+            text-align: left;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            border: 1px solid #000000;
+            border-radius: 4px;
+            resize: none;
+        }
+        
+        #charCount {
+            text-align: right;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        #charCount.warning {
+            color: red;
+        }
+        
+        #error {
+            display: none;
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        #error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <textarea id="textArea" maxlength="200" placeholder="Type here..."></textarea>
+        <div id="charCount">0 / 200 characters</div>
+        <p id="error">You have exceeded the 200 character limit!</p>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const textArea = document.getElementById('textArea');
+            const charCount = document.getElementById('charCount');
+            const error = document.getElementById('error');
+            const maxLength = 200;
+
+            function updateCharCount() {
+                const currentLength = textArea.value.length;
+                
+                // Update the character count display
+                if (currentLength > maxLength) {
+                    textArea.value = textArea.value.slice(0, maxLength); // Trim the text to maxLength
+                }
+                
+                const remainingChars = maxLength - textArea.value.length;
+                charCount.textContent = `${textArea.value.length} / ${maxLength} characters`;
+                
+                if (remainingChars === 0) {
+                    charCount.classList.add('warning');
+                    error.classList.add('show');
+                } else {
+                    charCount.classList.remove('warning');
+                    error.classList.remove('show');
+                }
+            }
+
+            // Attach event listener
+            textArea.addEventListener('input', updateCharCount);
+            
+            // Initialize count on page load
+            updateCharCount();
+        });
+    </script>
+</body>
+</html>
